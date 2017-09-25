@@ -124,10 +124,7 @@ class BusinessesViewController: UIViewController {
                 if let businesses = businesses {
                     self.businesses = businesses
                     self.tableView.reloadData()
-                    for business in businesses {
-                        print(business.name!)
-                        print(business.address!)
-                    }
+                    
                 }
             }
         }
