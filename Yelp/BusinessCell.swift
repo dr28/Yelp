@@ -10,23 +10,17 @@ import UIKit
 
 class BusinessCell: UITableViewCell {
 
-    @IBOutlet weak var thumbImgView: UIImageView!
- 
-    @IBOutlet weak var nameLabel: UILabel!
-    
-    @IBOutlet weak var distanceLabel: UILabel!
-    @IBOutlet weak var ratingsImgView: UIImageView!
-    
-    @IBOutlet weak var reviewsCountLabel: UILabel!
-    
-    @IBOutlet weak var addressLabel: UILabel!
-    
-    @IBOutlet weak var categoriesLabel: UILabel!
+    @IBOutlet private weak var thumbImgView: UIImageView!
+    @IBOutlet private weak var nameLabel: UILabel!
+    @IBOutlet private weak var distanceLabel: UILabel!
+    @IBOutlet private weak var ratingsImgView: UIImageView!
+    @IBOutlet private weak var reviewsCountLabel: UILabel!
+    @IBOutlet private weak var addressLabel: UILabel!
+    @IBOutlet private weak var categoriesLabel: UILabel!
     
     var business: Business! {
         
         didSet {
-            
             nameLabel.text = business.name
             if let imageURL = business.imageURL {
                 thumbImgView.setImageWith(imageURL)
@@ -53,11 +47,8 @@ class BusinessCell: UITableViewCell {
         
         thumbImgView.layer.cornerRadius = 3
         thumbImgView.clipsToBounds = true
-        
-        nameLabel.preferredMaxLayoutWidth = nameLabel.frame.size.width
-        
-        
 
+        nameLabel.preferredMaxLayoutWidth = nameLabel.frame.size.width
     }
     
     override func layoutSubviews() {
@@ -66,7 +57,6 @@ class BusinessCell: UITableViewCell {
         distanceLabel.tintColor = ThemeManager.currentTheme().secondaryColor
         reviewsCountLabel.tintColor = ThemeManager.currentTheme().secondaryColor
         categoriesLabel.tintColor = ThemeManager.currentTheme().secondaryColor
-
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

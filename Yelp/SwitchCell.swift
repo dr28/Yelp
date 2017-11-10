@@ -14,8 +14,7 @@ import UIKit
 
 class SwitchCell: UITableViewCell {
     @IBOutlet weak var switchLabel: UILabel!
-
-    @IBOutlet weak var onSwitch: UISwitch!
+    @IBOutlet weak var onSwitch: CustomSwitch!
     
     weak var delegate: SwitchCellDelegate?
     
@@ -29,12 +28,19 @@ class SwitchCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
+        onSwitch.onTintColor = UIColor(red: 0, green: 122/255, blue: 255/255, alpha: 1)
+        onSwitch.offTintColor = .lightGray
+        onSwitch.areLabelsShown = true
+        onSwitch.labelOff.text = "OFF"
+        onSwitch.labelOn.text = "ON"
+        let thumbImage = UIImage(named: "yelpthumb")!
+        let thumbImageView = UIImageView(image: thumbImage.withRenderingMode(UIImageRenderingMode.alwaysTemplate))
+        onSwitch.thumbImage = thumbImageView.image
+        onSwitch.tintColor = onSwitch.isOn ? UIColor(red: 0, green: 122/255, blue: 255/255, alpha: 1) : UIColor.lightGray
     }
     
     func switchValueChanged() {
-
+        onSwitch.tintColor = onSwitch.isOn ? UIColor(red: 0, green: 122/255, blue: 255/255, alpha: 1) : UIColor.lightGray
         delegate?.switchCell?(switchCell: self, didChangeValue: onSwitch.isOn)
-        
     }
-
 }

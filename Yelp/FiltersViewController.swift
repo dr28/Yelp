@@ -11,34 +11,29 @@ import UIKit
 @objc protocol FiltersViewControllerDelegate {
     @objc optional func filterViewController(filterViewController: FiltersViewController, didUpdateFilters filters: [String: AnyObject])
     @objc optional func filterMapViewController(filterViewController: FiltersViewController, didUpdateFilters filters: [String: AnyObject])
-
 }
 
 class FiltersViewController: UIViewController, FiltersViewControllerDelegate {
 
     @IBOutlet weak var tableView: UITableView!
     
-    fileprivate let yelpFilters:[String] = ["", "Distance", "Sort By", "Category"]
+    fileprivate let yelpFilters = ["", "Distance", "Sort By", "Category"]
     fileprivate var stateArray = [false, false, false, false]
 
     fileprivate var selectedDistanceIndex = 0
     fileprivate var selectedSortIndex: Int = 0
 
     fileprivate var selectedSort = 0
-    fileprivate var selectedDistance = 0
+    fileprivate var selectedDistance = 1609 //1 mile in meters
     
-    fileprivate var categories: [[String:String]]? = nil
-    fileprivate var switchStates = [Int:Bool] ()
-    fileprivate var tableStructure: [[[String: String]]]? = nil
-
+    fileprivate var categories: [[String:String]]!
+    fileprivate var switchStates: [Int:Bool] = [:]
+    fileprivate var tableStructure: [[[String: String]]]!
     fileprivate var selectedDeal = false
-
     fileprivate var showAllCategory = false
     
     weak var delegate:FiltersViewControllerDelegate?
-    
-    fileprivate var filters = [String: AnyObject]()
-
+    var filters: [String: AnyObject]!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,65 +43,50 @@ class FiltersViewController: UIViewController, FiltersViewControllerDelegate {
         navigationController!.navigationBar.tintColor = ThemeManager.currentTheme().backgroundColor
 
         let titleColor = ThemeManager.currentTheme().backgroundColor
-        let attributes: [String: AnyObject] = [NSForegroundColorAttributeName: titleColor]
+        let attributes = [NSForegroundColorAttributeName: titleColor]
         navigationController!.navigationBar.titleTextAttributes = attributes
-
-        categories = yelpCategories()
 
         tableView.dataSource = self
         tableView.delegate = self
-
+        tableView.tableFooterView = UIView()
+        tableView.rowHeight = UITableViewAutomaticDimension;
+        tableView.estimatedRowHeight = 44.0
+            
+        categories = yelpCategories()
         tableStructure = [ yelpDeal(), yelpDistances(), yelpSortBy(), yelpCategories()  ]
-
-        self.tableView.rowHeight = UITableViewAutomaticDimension;
-        self.tableView.estimatedRowHeight = 44.0;
-    
-
     }
     
-    
     @IBAction func onCancelButton(_ sender: Any) {
-        
         dismiss(animated: true, completion: nil)
-        
     }
 
     @IBAction func onSearchButton(_ sender: Any) {
         
         dismiss(animated: true, completion: nil)
 
-        //var 
-        filters = [String: AnyObject]()
+        filters = [ : ]
 
-        var selectedCategories = [String]()
+        var selectedCategories: [String] = []
         
-        for(row, isSelected) in switchStates {
-            
+        for (row, isSelected) in switchStates {
             if isSelected {
-                
                 selectedCategories.append((categories?[row]["code"]!)!)
             }
-                    
         }
         
         if selectedCategories.count > 0 {
             filters[Constants.filterCategories] = selectedCategories as AnyObject
-            
         }
         
         filters[Constants.filterDeals] = selectedDeal as AnyObject
         filters[Constants.filterSort] = selectedSort as AnyObject
         filters[Constants.filterDistance] = selectedDistance as AnyObject
 
-        
         delegate?.filterViewController?(filterViewController: self, didUpdateFilters: filters)
         delegate?.filterMapViewController?(filterViewController: self, didUpdateFilters: filters)
     }
-    
  
     fileprivate func yelpCategories() -> [[String : String]] {
-        
-    
         return [["name" : "Afghan", "code": "afghani"],
                       ["name" : "African", "code": "african"],
                       ["name" : "American, New", "code": "newamerican"],
@@ -279,8 +259,6 @@ class FiltersViewController: UIViewController, FiltersViewControllerDelegate {
     }
 
     fileprivate func yelpDistances() -> [[String : String]] {
-        
-        
         return [["name" : "Auto", "code": "1"],
                 ["name" : "0.3 miles", "code": "0.3"],
                 ["name" : "1 miles", "code": "1"],
@@ -290,19 +268,14 @@ class FiltersViewController: UIViewController, FiltersViewControllerDelegate {
 
     
     fileprivate func yelpSortBy() -> [[String : String]] {
-        
-        
         return [["name" : "Best Match", "code": "0"],
                 ["name" : "Distance", "code": "1"],
                 ["name" : "Highest Rated", "code": "2"]]
     }
     
     fileprivate func yelpDeal() -> [[String : String]] {
-        
-        
         return [["name" : "Offering a Deal", "code": "true"]]
     }
-
 }
 
 extension FiltersViewController: SwitchCellDelegate {
@@ -311,20 +284,26 @@ extension FiltersViewController: SwitchCellDelegate {
         
         if(indexPath.section == 3) {
             switchStates[indexPath.row] = value
-            
         }
-        else{
+        else {
             selectedDeal = value
         }
-        
     }
-
-
+    
+    func switchCell1(switchCell: SwitchCell, didChangeValue value:  Bool) {
+        print("switchCell1")
+        let indexPath = tableView.indexPath(for: switchCell)!
+        
+        if(indexPath.section == 3) {
+            switchStates[indexPath.row] = value
+        }
+        else {
+            selectedDeal = value
+        }
+    }
 }
 
-
 // MARK: - TableView Datasource and Delegate methods
-
 extension FiltersViewController: UITableViewDataSource, UITableViewDelegate {
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -351,58 +330,43 @@ extension FiltersViewController: UITableViewDataSource, UITableViewDelegate {
             }
             return 1
         }
-        
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        
         return 50
-        
-        
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        
         return 50.0
-        
     }
-    
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = UITableViewHeaderFooterView()
         
-        for view in (headerView.subviews) {
+        for view in headerView.subviews {
             view.removeFromSuperview()
         }
         
-        
         let titleLabel = UILabel(frame: CGRect(x: 15, y: 25, width: tableView.frame.size.width, height: 20))
-        
         let titleFont = UIFont.systemFont(ofSize: 16, weight: UIFontWeightSemibold)
         titleLabel.font = titleFont
         titleLabel.text = self.tableView(self.tableView, titleForHeaderInSection: section)
         titleLabel.textColor = UIColor.black
         
         headerView.layer.backgroundColor = ThemeManager.currentTheme().secondaryBackgroundColor.cgColor
-
         headerView.addSubview(titleLabel)
         
         return headerView
-        
     }
-    
-    
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         switch indexPath.section {
             
         case 0, 3: // Switch Cells
-            
             if indexPath.row != 3 || showAllCategory {
                 
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constants.switchReuseIdentifier, for: indexPath) as! SwitchCell
-                
                 
                 cell.switchLabel.text = tableStructure?[indexPath.section][indexPath.row]["name"]
                 cell.delegate = self
@@ -410,59 +374,46 @@ extension FiltersViewController: UITableViewDataSource, UITableViewDelegate {
                 if indexPath.section == 3 {
                     cell.onSwitch.isOn = switchStates[indexPath.row] ?? false
                 }
-                else
-                {
+                else {
                     cell.onSwitch.isOn = selectedDeal
                 }
                 
                 cell.selectionStyle = .none
-                
                 return cell
-                
             }
             else {
                 let cell = tableView.dequeueReusableCell(withIdentifier: Constants.seeAllReuseIdentifier, for: indexPath)
                 
                 return cell
-                
             }
         case 1, 2:
-            
             let cell = tableView.dequeueReusableCell(withIdentifier: Constants.dropReuseIdentifier, for: indexPath) as! DropDownCell
             cell.dropDownLabel.text = tableStructure?[indexPath.section][indexPath.row]["name"]
             
-            if (!stateArray[indexPath.section]) {
+            if !stateArray[indexPath.section] {
                 cell.accessoryView = UIImageView(image: UIImage(named: "Dropdown"))
-                
             }
-            else{
+            else {
                 var selectedValueIndex = 0
                 if indexPath.section == 1 {
                     selectedValueIndex = selectedDistanceIndex
-                    
                 }
                 else {
                     selectedValueIndex = selectedSortIndex
-                    
                 }
-                if (indexPath.row == selectedValueIndex) {
+                if indexPath.row == selectedValueIndex {
                     cell.accessoryView = UIImageView(image: UIImage(named: "Check"))
-                    
                 }
                 else {
                     cell.accessoryView = UIImageView(image: UIImage(named: "Uncheck"))
-                    
                 }
             }
-            
             
             return cell
             
         default :
             return UITableViewCell()
         }
-        
-        
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -478,22 +429,17 @@ extension FiltersViewController: UITableViewDataSource, UITableViewDelegate {
                 
                 if indexPath.section == 1 {
                     tableStructure?.insert(yelpDistances(), at: indexPath.section)
-                    
-                    
                 } else if indexPath.section == 2 {
                     tableStructure?.insert(yelpSortBy(), at: indexPath.section)
-                
                 }
             }
             else {
                 if indexPath.section == 1 {
-                    
                     selectedDistanceIndex = indexPath.row
                 }
-                else{
+                else {
                     selectedSortIndex = indexPath.row
                 }
-                
             }
             
             let selectedfilter = tableStructure?[indexPath.section]
@@ -504,10 +450,7 @@ extension FiltersViewController: UITableViewDataSource, UITableViewDelegate {
                 
                 let selDistance = Double.init(yelpDistances()[indexPath.row]["code"]!)!
                 
-                let milesPerMeter = 0.000621371
-                
-                selectedDistance = Int(selDistance / milesPerMeter)
-                
+                selectedDistance = Int(selDistance / Constants.milesPerMeter)
             }
             else {
                 selectedSort = Int.init(yelpSortBy()[indexPath.row]["code"]!)!
@@ -519,13 +462,11 @@ extension FiltersViewController: UITableViewDataSource, UITableViewDelegate {
             cell.accessoryView = UIImageView(image: UIImage(named: "Check"))
             
             self.tableView.reloadSections(IndexSet(integer: indexPath.section), with: UITableViewRowAnimation.fade)
-        
         }
-        else if (indexPath.section == 3 && indexPath.row == 3 && !showAllCategory) {
+        else if indexPath.section == 3 && indexPath.row == 3 && !showAllCategory {
             
             showAllCategory = !showAllCategory
             self.tableView.reloadSections(IndexSet(integer: indexPath.section), with: UITableViewRowAnimation.fade)
-            
         }
     }
 }

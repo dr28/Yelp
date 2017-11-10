@@ -2,11 +2,11 @@
   "images" : [
     {
       "idiom" : "universal",
+      "filename" : "yelpthumb.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "yelp.png",
       "scale" : "2x"
     },
     {

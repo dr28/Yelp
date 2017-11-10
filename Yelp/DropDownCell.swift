@@ -14,7 +14,6 @@ class DropDownCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -22,5 +21,4 @@ class DropDownCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
-
 }

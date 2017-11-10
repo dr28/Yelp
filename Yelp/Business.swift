@@ -50,16 +50,13 @@ class Business: NSObject {
             if let coordinate = location!["coordinate"] as? NSDictionary {
                 
                 lat = (coordinate["latitude"] as? Double)!
-                
                 longt = (coordinate["longitude"] as? Double)!
-
             }
         }
         
         self.address = address
         self.latitude = lat
         self.longtitude = longt
-        
         
         let categoriesArray = dictionary["categories"] as? [[String]]
         if categoriesArray != nil {
@@ -89,8 +86,6 @@ class Business: NSObject {
         }
         
         reviewCount = dictionary["review_count"] as? NSNumber
-    
-        
     }
     
     class func businesses(array: [NSDictionary]) -> [Business] {
@@ -106,10 +101,7 @@ class Business: NSObject {
         _ = YelpClient.sharedInstance.searchWithTerm(term, completion: completion)
     }
     
-    class func searchWithTerm(term: String, sort: YelpSortMode?, categories: [String]?, deals: Bool?, distance: Int, completion: @escaping ([Business]?, Error?) -> Void) -> Void {
-        _ = YelpClient.sharedInstance.searchWithTerm(term, sort: sort, categories: categories, deals: deals, distance: distance, completion: completion)
-        
-        
+    class func searchWithTerm(term: String, sort: YelpSortMode?, categories: [String]?, deals: Bool?, distance: Int, offset: Int?,completion: @escaping ([Business]?, Error?) -> Void) -> Void {
+        _ = YelpClient.sharedInstance.searchWithTerm(term, sort: sort, categories: categories, deals: deals, distance: distance, offset: offset, completion: completion)
     }
-
 }

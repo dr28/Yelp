@@ -26,7 +26,6 @@ class YelpClient: BDBOAuth1RequestOperationManager {
     var accessSecret: String!
     
     //MARK: Shared Instance
-    
     static let sharedInstance = YelpClient(consumerKey: yelpConsumerKey, consumerSecret: yelpConsumerSecret, accessToken: yelpToken, accessSecret: yelpTokenSecret)
     
     required init?(coder aDecoder: NSCoder) {
@@ -44,10 +43,10 @@ class YelpClient: BDBOAuth1RequestOperationManager {
     }
     
     func searchWithTerm(_ term: String, completion: @escaping ([Business]?, Error?) -> Void) -> AFHTTPRequestOperation {
-        return searchWithTerm(term, sort: nil, categories: nil, deals: nil, distance: 483, completion: completion)
+        return searchWithTerm(term, sort: nil, categories: nil, deals: nil, distance: 483, offset: nil, completion: completion)
     }
     
-    func searchWithTerm(_ term: String, sort: YelpSortMode?, categories: [String]?, deals: Bool?, distance: Int, completion: @escaping ([Business]?, Error?) -> Void) -> AFHTTPRequestOperation {
+    func searchWithTerm(_ term: String, sort: YelpSortMode?, categories: [String]?, deals: Bool?, distance: Int, offset: Int?,completion: @escaping ([Business]?, Error?) -> Void) -> AFHTTPRequestOperation {
         // For additional parameters, see http://www.yelp.com/developers/documentation/v2/search_api
         
         // Default the location to San Francisco
@@ -65,6 +64,10 @@ class YelpClient: BDBOAuth1RequestOperationManager {
             parameters["deals_filter"] = deals! as AnyObject?
         }
         
+        if let offset = offset {
+            parameters["offset"] = offset.description as AnyObject
+        }
+        
         return self.get("search", parameters: parameters,
                         success: { (operation: AFHTTPRequestOperation, response: Any) -> Void in
                             if let response = response as? [String: Any]{
@@ -75,7 +78,7 @@ class YelpClient: BDBOAuth1RequestOperationManager {
                                     if(distance != 0) {
                                     let filteredBusiness = dictionaries!.filter({ (business: NSDictionary) -> Bool in
                                         
-                                        let matchFound = ((business["distance"]! as! Int) <= distance)
+                                        let matchFound = ((business["distance"]! as! NSNumber).intValue <= distance)
                                         
                                         return matchFound
                                     })

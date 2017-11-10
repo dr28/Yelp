@@ -14,7 +14,6 @@ struct Constants {
     static let restaurants = "Restaurants"
     static let reviewLabel = "review"
     static let reviewsLabel = reviewLabel + "s"
-
     
     static let detailsReuseIdentifier = "Details"
     static let businessReuseIdentifier = "BusinessCell"
@@ -34,8 +33,13 @@ struct Constants {
     static let filterSort = "sort"
     static let filterCategories = "categories"
     static let filterDistance = "distance"
+    static let filterOffset = "offset"
+    static let filterTerm = "term"
 
+    static let milesPerMeter = 0.000621371
     
-
-
+    static func rounded(no : Double, toPlaces places:Int) -> Double {
+        let divisor = pow(10.0, Double(places))
+        return (no * divisor).rounded() / divisor
+    }
 }

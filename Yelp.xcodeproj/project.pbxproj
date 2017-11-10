@@ -26,6 +26,8 @@
 		F82E22271F76744100E7C74C /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82E22261F76744100E7C74C /* MapViewController.swift */; };
 		F82E22291F7754FC00E7C74C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82E22281F7754FC00E7C74C /* Constants.swift */; };
 		F82E222B1F7755F700E7C74C /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82E222A1F7755F700E7C74C /* Theme.swift */; };
+		F83A00E41FB4E274004B1E48 /* CustomSwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83A00E31FB4E274004B1E48 /* CustomSwitch.swift */; };
+		F8A6253B1F79A77600BCFDC3 /* YelpFilters.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A6253A1F79A77600BCFDC3 /* YelpFilters.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,6 +69,8 @@
 		F82E22261F76744100E7C74C /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		F82E22281F7754FC00E7C74C /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		F82E222A1F7755F700E7C74C /* Theme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		F83A00E31FB4E274004B1E48 /* CustomSwitch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSwitch.swift; sourceTree = "<group>"; };
+		F8A6253A1F79A77600BCFDC3 /* YelpFilters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YelpFilters.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -164,6 +168,7 @@
 			isa = PBXGroup;
 			children = (
 				22AAAA981AEA0A9700A544AF /* Business.swift */,
+				F8A6253A1F79A77600BCFDC3 /* YelpFilters.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -203,6 +208,7 @@
 		F82E214C1F71FC0F00E7C74C /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				F83A00E31FB4E274004B1E48 /* CustomSwitch.swift */,
 				F82E214D1F71FC6200E7C74C /* BusinessCell.swift */,
 				F82E21581F72EC4900E7C74C /* SwitchCell.swift */,
 				F82E22201F74957D00E7C74C /* DropDownCell.swift */,
@@ -268,6 +274,7 @@
 				TargetAttributes = {
 					222D8A5419CCF9F900D2DB53 = {
 						CreatedOnToolsVersion = 6.0;
+						DevelopmentTeam = Q96MZVJ8BN;
 						LastSwiftMigration = 0800;
 					};
 					222D8A6919CCF9F900D2DB53 = {
@@ -429,6 +436,7 @@
 			files = (
 				F82E214E1F71FC6200E7C74C /* BusinessCell.swift in Sources */,
 				22AAAA9C1AEA1EC300A544AF /* BusinessesViewController.swift in Sources */,
+				F83A00E41FB4E274004B1E48 /* CustomSwitch.swift in Sources */,
 				F82E215B1F72EED000E7C74C /* FiltersViewController.swift in Sources */,
 				22AAAA991AEA0A9700A544AF /* Business.swift in Sources */,
 				F82E22211F74957D00E7C74C /* DropDownCell.swift in Sources */,
@@ -438,6 +446,7 @@
 				222D8A7D19CCFAE000D2DB53 /* YelpClient.swift in Sources */,
 				F82E22231F74F20B00E7C74C /* DetailViewController.swift in Sources */,
 				222D8A5B19CCF9F900D2DB53 /* AppDelegate.swift in Sources */,
+				F8A6253B1F79A77600BCFDC3 /* YelpFilters.swift in Sources */,
 				F82E21591F72EC4900E7C74C /* SwitchCell.swift in Sources */,
 				F82E222B1F7755F700E7C74C /* Theme.swift in Sources */,
 			);
@@ -574,10 +583,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				DEVELOPMENT_TEAM = Q96MZVJ8BN;
 				INFOPLIST_FILE = Yelp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.codepath.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.odepath.Yelp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -591,10 +601,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				DEVELOPMENT_TEAM = Q96MZVJ8BN;
 				INFOPLIST_FILE = Yelp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.codepath.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.odepath.Yelp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 3.0;

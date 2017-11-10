@@ -52,8 +52,6 @@ enum Theme: Int {
             return UIColor()
         }
     }
-
-    
 }
 
 struct ThemeManager {
@@ -67,19 +65,5 @@ struct ThemeManager {
         }
         
         return Theme(rawValue: storedTheme)!
-        
-    }
-    
-    static func applyTheme(theme: Theme) {
-        UserDefaults.standard.setValue(theme.rawValue, forKey: SelectedThemeKey)
-        UserDefaults.standard.synchronize()
-        
-        let sharedApplication = UIApplication.shared
-        sharedApplication.delegate?.window??.tintColor = theme.mainColor
-        
-        
-        UINavigationBar.appearance().barTintColor = UIColor(red: 212/255, green: 32/255, blue: 43/255, alpha: 1.0)
-        UINavigationBar.appearance().tintColor = UIColor.white
-        
     }
 }

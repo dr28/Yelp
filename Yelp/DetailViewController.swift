@@ -11,19 +11,19 @@ import MapKit
 import CoreLocation
 
 class DetailViewController: UIViewController, CLLocationManagerDelegate {
-    @IBOutlet weak var businessImgView: UIImageView!
+    @IBOutlet private weak var businessImgView: UIImageView!
+    @IBOutlet private weak var businessLabel: UILabel!
+    @IBOutlet private weak var businessMapView: MKMapView!
+    @IBOutlet private weak var ratingsImg: UIImageView!
+    @IBOutlet private weak var categoryLabel: UILabel!
+    @IBOutlet private weak var addressLabel: UILabel!
+    @IBOutlet private weak var ratingsLabel: UILabel!
+    
+    fileprivate let centerLocation = CLLocation(latitude: 37.7833, longitude: -122.4167)
+    fileprivate lazy var locationManager = self.makeLocationManager()
 
-    @IBOutlet weak var businessLabel: UILabel!
-    @IBOutlet weak var businessMapView: MKMapView!
-    @IBOutlet weak var ratingsImg: UIImageView!
-    
-    @IBOutlet weak var categoryLabel: UILabel!
-    @IBOutlet weak var addressLabel: UILabel!
-    @IBOutlet weak var ratingsLabel: UILabel!
-    
     var business:Business?
-    
-    lazy var locationManager: CLLocationManager = self.makeLocationManager()
+    var filters: [String: AnyObject]!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,15 +48,12 @@ class DetailViewController: UIViewController, CLLocationManagerDelegate {
         categoryLabel.text = business?.categories
         navigationController!.navigationBar.barTintColor = ThemeManager.currentTheme().mainColor
         navigationController!.navigationBar.tintColor = ThemeManager.currentTheme().backgroundColor
-
-        let centerLocation = CLLocation(latitude: 37.7833, longitude: -122.4167)
         
         businessMapView.tintColor = UIColor.blue.withAlphaComponent(0.7)
-
         
         let annotation = MKPointAnnotation()
-        let coordinate = CLLocationCoordinate2D(latitude: (self.business?.latitude!)!, longitude: (self.business?.longtitude!)!)
-        annotation.coordinate = coordinate
+        let coordinate = CLLocationCoordinate2D(latitude: centerLocation.coordinate.latitude, longitude: centerLocation.coordinate.longitude)
+
         self.businessMapView.addAnnotation(annotation)
         self.businessMapView.setRegion(MKCoordinateRegion(center: coordinate, span: MKCoordinateSpanMake(0.01, 0.01)), animated: false)
         self.businessMapView.layer.cornerRadius = 9.0
@@ -64,7 +61,6 @@ class DetailViewController: UIViewController, CLLocationManagerDelegate {
 
         goToLocation(location: centerLocation)
         addAnnotationAtAddress(address: (business?.address)!, title: (business?.name)!)
-
     }
     
     private func makeLocationManager() -> CLLocationManager {
@@ -79,10 +75,39 @@ class DetailViewController: UIViewController, CLLocationManagerDelegate {
     }
 
     
-    func goToLocation(location: CLLocation) {
+    private func goToLocation(location: CLLocation) {
         let span = MKCoordinateSpanMake(0.1, 0.1)
         let region = MKCoordinateRegionMake(location.coordinate, span)
         businessMapView.setRegion(region, animated: false)
+    }
+    
+    private func makeSpanRegion()
+    {
+        var miles: Double = 5.0
+        
+        if let distInMeters = filters[Constants.filterDistance] {
+            var distInMiles = Double.init(distInMeters as! NSNumber) * 0.000621371
+            distInMiles = Constants.rounded(no: distInMiles, toPlaces: 1)
+            
+            if distInMiles > miles {
+                miles = distInMiles
+            }
+        }
+        
+        print("miles \(miles)")
+        
+        let scalingFactor: Double = abs( (cos(2 * M_PI * centerLocation.coordinate.latitude / 360.0) ))
+        
+        var span = MKCoordinateSpan()
+        
+        span.latitudeDelta = miles/69.0
+        span.longitudeDelta = miles/(scalingFactor * 69.0)
+        
+        var region = MKCoordinateRegion()
+        region.span = span
+        region.center = centerLocation.coordinate
+        
+        businessMapView.setRegion(region, animated: true)
     }
 
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
@@ -99,9 +124,10 @@ class DetailViewController: UIViewController, CLLocationManagerDelegate {
         }
     }
     
-   
     // add an annotation with an address: String
-    func addAnnotationAtAddress(address: String, title: String) {
+    private func addAnnotationAtAddress(address: String, title: String) {
+        makeSpanRegion()
+
         let geocoder = CLGeocoder()
         geocoder.geocodeAddressString(address) { (placemarks, error) in
             if let placemarks = placemarks {
@@ -119,7 +145,6 @@ class DetailViewController: UIViewController, CLLocationManagerDelegate {
 }
 
 // MARK: - MapView Delegate methods
-
 extension BusinessesViewController: MKMapViewDelegate {
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
@@ -139,5 +164,3 @@ extension BusinessesViewController: MKMapViewDelegate {
         return annotationView
     }
 }
-
-
