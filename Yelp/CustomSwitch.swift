@@ -2,7 +2,7 @@
 //  CustomSwitch.swift
 //  Yelp
 //
-//  Created by Deepthy on 09/25/17.
+//  Created by Deepthy on 9/25/17.
 //  Copyright © 2017 Timothy Lee. All rights reserved.
 //
 

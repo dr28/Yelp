@@ -282,19 +282,7 @@ extension FiltersViewController: SwitchCellDelegate {
     func switchCell(switchCell: SwitchCell, didChangeValue value:  Bool) {
         let indexPath = tableView.indexPath(for: switchCell)!
         
-        if(indexPath.section == 3) {
-            switchStates[indexPath.row] = value
-        }
-        else {
-            selectedDeal = value
-        }
-    }
-    
-    func switchCell1(switchCell: SwitchCell, didChangeValue value:  Bool) {
-        print("switchCell1")
-        let indexPath = tableView.indexPath(for: switchCell)!
-        
-        if(indexPath.section == 3) {
+        if indexPath.section == 3 {
             switchStates[indexPath.row] = value
         }
         else {
@@ -394,19 +382,9 @@ extension FiltersViewController: UITableViewDataSource, UITableViewDelegate {
                 cell.accessoryView = UIImageView(image: UIImage(named: "Dropdown"))
             }
             else {
-                var selectedValueIndex = 0
-                if indexPath.section == 1 {
-                    selectedValueIndex = selectedDistanceIndex
-                }
-                else {
-                    selectedValueIndex = selectedSortIndex
-                }
-                if indexPath.row == selectedValueIndex {
-                    cell.accessoryView = UIImageView(image: UIImage(named: "Check"))
-                }
-                else {
-                    cell.accessoryView = UIImageView(image: UIImage(named: "Uncheck"))
-                }
+                let selectedValueIndex = indexPath.section == 1 ? selectedDistanceIndex : selectedSortIndex
+                
+                cell.accessoryView = indexPath.row == selectedValueIndex ? UIImageView(image: UIImage(named: "Check")) : UIImageView(image: UIImage(named: "Uncheck"))
             }
             
             return cell
@@ -449,7 +427,6 @@ extension FiltersViewController: UITableViewDataSource, UITableViewDelegate {
             if indexPath.section == 1 {
                 
                 let selDistance = Double.init(yelpDistances()[indexPath.row]["code"]!)!
-                
                 selectedDistance = Int(selDistance / Constants.milesPerMeter)
             }
             else {

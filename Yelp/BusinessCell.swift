@@ -29,13 +29,8 @@ class BusinessCell: UITableViewCell {
             ratingsImgView.setImageWith(business.ratingImageURL!)
             
             let reviewCount = business.reviewCount
+            reviewsCountLabel.text = reviewCount == 1 ? "\(reviewCount!) \(Constants.reviewLabel)" : "\(reviewCount!) \(Constants.reviewsLabel)"
             
-            if (reviewCount == 1) {
-                reviewsCountLabel.text = "\(reviewCount!) \(Constants.reviewLabel)"
-            } else {
-                reviewsCountLabel.text = "\(reviewCount!) \(Constants.reviewsLabel)"
-            }
-
             addressLabel.text = business.address
             categoriesLabel.text = business.categories
         }

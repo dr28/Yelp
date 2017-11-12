@@ -32,18 +32,13 @@ class DetailViewController: UIViewController, CLLocationManagerDelegate {
         businessImgView.setImageWith((business?.imageURL!)!)
         businessLabel.text = business?.name
         ratingsImg.setImageWith((business?.ratingImageURL!)!)
-        
-        var reviewsCountLabel: String?
-        if (business?.reviewCount! == 1) {
-            reviewsCountLabel = "\((business?.reviewCount!)!) \(Constants.reviewLabel)"
-        } else {
-            reviewsCountLabel = "\((business?.reviewCount!)!) \(Constants.reviewsLabel)"
-        }
+                
+        let reviewsCountLabel = business?.reviewCount! == 1 ? "\((business?.reviewCount!)!) \(Constants.reviewLabel)" : "\((business?.reviewCount!)!) \(Constants.reviewsLabel)"
         
         ratingsLabel.tintColor = ThemeManager.currentTheme().secondaryColor
         categoryLabel.tintColor = ThemeManager.currentTheme().secondaryColor
 
-        ratingsLabel.text = String(describing: reviewsCountLabel!)
+        ratingsLabel.text = String(describing: reviewsCountLabel)
         addressLabel.text = business?.address
         categoryLabel.text = business?.categories
         navigationController!.navigationBar.barTintColor = ThemeManager.currentTheme().mainColor
